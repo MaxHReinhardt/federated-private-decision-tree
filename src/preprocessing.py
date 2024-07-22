@@ -24,3 +24,23 @@ def categorize_quartiles(series):
                   labels=['Q1', 'Q2', 'Q3', 'Q4'])
 
 
+def split_dataset_in_n_equally_sized_client_datasets(df, n):
+    # Shuffle the df
+    shuffled_df = df.sample(frac=1).reset_index(drop=True)
+
+    num_rows = len(shuffled_df)
+    rows_per_split = num_rows // n
+
+    split_dfs = []
+
+    for i in range(n):
+        start_index = i * rows_per_split
+        # The last client gets all remaining rows
+        if i == n - 1:
+            split_dfs.append(shuffled_df.iloc[start_index:])
+        else:
+            split_dfs.append(shuffled_df.iloc[start_index:start_index + rows_per_split])
+
+    return split_dfs
+
+

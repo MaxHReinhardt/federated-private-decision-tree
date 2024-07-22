@@ -1,19 +1,23 @@
-from src.ID3 import *
+from src.federated_ID3 import *
 from src.explore_tree import *
 from src.preprocessing import *
 
 
-def test_ID3_workflow():
+def test_federated_ID3_workflow():
+
+    # np.random.seed(0)
 
     # Load and preprocess data
     df = pd.read_csv('../data/Small.csv')
     df = preprocessing(df)
-    print(df.head())
+    client_datasets = split_dataset_in_n_equally_sized_client_datasets(df, 10)
+    # client_datasets = [df]
+    print(client_datasets[0].head())
 
     # Fit the decision tree
-    attributes = sorted(df.columns[:-1].tolist())
+    attributes = sorted(client_datasets[0].columns[:-1].tolist())
     min_samples_split = 5
-    tree = id3(df, attributes, min_samples_split=min_samples_split)
+    tree = federated_id3(client_datasets, attributes, default_class=None, min_samples_split=min_samples_split)
     print(f'Decision tree dict: {tree}')
 
     # Calculate evaluation metrics (on the same df used for training for simplicity)
@@ -23,5 +27,4 @@ def test_ID3_workflow():
 
     # Visualize the tree
     _ = visualize_tree(tree, tree_name="graphics/decision_tree", format="png", cleanup=True)
-
 

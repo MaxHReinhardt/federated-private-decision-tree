@@ -31,11 +31,15 @@ def information_gain(data, attribute):
 
 # Choose the best attribute for the next split
 def best_attribute(data, attributes):
-    best_gain = 0.0
+    best_gain = -float('inf')
     best_attr = None
-    for attr in attributes:
+
+    # Sorting to achieve order invariance
+    sorted_attributes = sorted(attributes)
+
+    for attr in sorted_attributes:
         gain = information_gain(data, attr)
-        if gain >= best_gain:
+        if gain > best_gain:
             best_gain = gain
             best_attr = attr
     return best_attr
