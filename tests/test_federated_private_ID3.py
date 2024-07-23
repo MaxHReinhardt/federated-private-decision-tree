@@ -18,7 +18,7 @@ def test_federated_private_ID3_workflow():
     # Load and preprocess data
     df = pd.read_csv('../data/Small.csv')
     df = preprocessing(df)
-    client_datasets = split_dataset_in_n_equally_sized_client_datasets(df, 4)
+    client_datasets = split_dataset_in_n_equally_sized_client_datasets(df, 4, seed=1)
     # client_datasets = [df]
     print(client_datasets[0].head())
 

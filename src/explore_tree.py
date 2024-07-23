@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.metrics import f1_score, accuracy_score, confusion_matrix
 import graphviz
 
+
 #
 # Predict
 #
@@ -27,9 +28,9 @@ def predict_all(tree, df):
 # Evaluate
 #
 
-# Calculate micro-f1 and accuracy based on testset
+# Calculate micro-f1, accuracy and confusion matrix based on testset
 def evaluate_on_testset(tree, test_df):
-    true_labels = test_df.iloc[:, -1]
+    true_labels = list(test_df.iloc[:, -1])
     predictions = predict_all(tree, test_df)
     f1 = f1_score(true_labels, predictions, average='macro')
     accuracy = accuracy_score(true_labels, predictions)

@@ -46,7 +46,7 @@ def best_attribute(data, attributes):
 
 
 # Fit the decision tree
-def id3(data, attributes, default_class=None, min_samples_split=2):
+def id3(data, attributes, values_dict, default_class=None, min_samples_split=2):
     labels = data.iloc[:, -1]
     # If the dataset is empty or attributes are exhausted, return the default class
     if data.empty or not attributes:
@@ -63,12 +63,11 @@ def id3(data, attributes, default_class=None, min_samples_split=2):
     best_attr = best_attribute(data, attributes)
     tree = {best_attr: {}}
 
-    attribute_values = data[best_attr].unique()
     remaining_attributes = [attr for attr in attributes if attr != best_attr]
 
-    for value in attribute_values:
+    for value in values_dict[best_attr]:
         subset = data[data[best_attr] == value]
-        subtree = id3(subset, remaining_attributes, default_class, min_samples_split)
+        subtree = id3(subset, remaining_attributes, values_dict, default_class, min_samples_split)
         tree[best_attr][value] = subtree
 
     return tree

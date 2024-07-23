@@ -12,8 +12,9 @@ def test_ID3_workflow():
 
     # Fit the decision tree
     attributes = sorted(df.columns[:-1].tolist())
+    values_dict = {col: df[col].unique().tolist() for col in df.columns}
     min_samples_split = 5
-    tree = id3(df, attributes, min_samples_split=min_samples_split)
+    tree = id3(df, attributes, values_dict, min_samples_split=min_samples_split)
     print(f'Decision tree dict: {tree}')
 
     # Calculate evaluation metrics (on the same df used for training for simplicity)

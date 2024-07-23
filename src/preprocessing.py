@@ -20,13 +20,20 @@ def preprocessing(df):
 # Function to categorize based on quartiles
 def categorize_quartiles(series):
     quartiles = series.quantile([0.25, 0.5, 0.75])
-    return pd.cut(series, bins=[-np.inf, quartiles[0.25], quartiles[0.5], quartiles[0.75], np.inf],
-                  labels=['Q1', 'Q2', 'Q3', 'Q4'])
+    bin_edges = [-np.inf] + list(quartiles) + [np.inf]
+
+    # Ensure distinct bin edges
+    for i in range(1, len(bin_edges) - 1):
+        if bin_edges[i] == bin_edges[i + 1]:
+            # If two edges are the same, move the upper bin edge slightly to avoid overlap
+            bin_edges[i + 1] += 1e-9
+
+    return pd.cut(series, bins=bin_edges, labels=['Q1', 'Q2', 'Q3', 'Q4'])
 
 
-def split_dataset_in_n_equally_sized_client_datasets(df, n):
+def split_dataset_in_n_equally_sized_client_datasets(df, n, seed=1):
     # Shuffle the df
-    shuffled_df = df.sample(frac=1).reset_index(drop=True)
+    shuffled_df = df.sample(frac=1, random_state=seed).reset_index(drop=True)
 
     num_rows = len(shuffled_df)
     rows_per_split = num_rows // n
