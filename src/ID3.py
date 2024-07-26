@@ -56,9 +56,9 @@ def id3(data, attributes, values_dict, default_class=None, min_samples_split=2):
         return labels.iloc[0]
     # If the number of samples is less than the minimum, return the majority class
     if len(data) < min_samples_split:
-        return labels.mode()[0]
+        return sorted(labels.mode())[0]
     # If there are no features left, return the majority class (in the next recursion)
-    default_class = labels.mode()[0]
+    default_class = sorted(labels.mode())[0]
 
     best_attr = best_attribute(data, attributes)
     tree = {best_attr: {}}

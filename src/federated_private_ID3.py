@@ -173,8 +173,8 @@ def federated_private_id3(clients_data, attributes, values_dict, classes,
     if sum(sorted_total_label_counts.values()) == 0 or not attributes:
         return default_class
     # If all labels are the same, return that label
-    if len(sorted_total_label_counts) == 1:
-        return next(iter(sorted_total_label_counts))
+    if sum(1 for value in sorted_total_label_counts.values() if value > 0) == 1:
+        return next(label for label, value in sorted_total_label_counts.items() if value > 0)
     # If the number of samples is less than the minimum, return the majority class
     if sum(sorted_total_label_counts.values()) < min_samples_split:
         return max(sorted_total_label_counts, key=sorted_total_label_counts.get)
