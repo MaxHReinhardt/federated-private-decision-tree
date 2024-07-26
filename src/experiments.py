@@ -38,8 +38,8 @@ def compare_settings(setting_type_list, num_clients_list, seed_list, data_path, 
             f1, accuracy, _ = evaluate_on_testset(tree, test_df)
             results_row = {
                 'setting_type': setting_type,
-                'num_clients': np.nan,
-                'seed': np.nan,
+                'num_clients': -99,
+                'seed': -99,
                 'f1': f1,
                 'accuracy': accuracy,
                 'execution_time': execution_time
